@@ -1,0 +1,1 @@
+export const PRODUCT_LIST_KEY: string = "api-vendas-PRODUCT_LIST";

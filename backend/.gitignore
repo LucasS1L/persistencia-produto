@@ -1,0 +1,12 @@
+.idea/
+.vscode/
+node_modules/
+build/
+temp/
+.env
+coverage
+dist
+docker-compose.yaml
+data
+
+uploads/
