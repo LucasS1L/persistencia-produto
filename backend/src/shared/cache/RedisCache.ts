@@ -1,11 +1,10 @@
 import Redis from "ioredis";
-import {cacheConfig} from "../../config/cache";
 
 export default class RedisCache {
     private client: Redis;
 
     constructor() {
-        this.client = new Redis(cacheConfig.config.redis);
+        this.client = new Redis(process.env.REDIS_URL as string);
     }
 
     public async save(key: string, value: any): Promise<void> {

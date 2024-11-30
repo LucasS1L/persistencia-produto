@@ -1,12 +1,10 @@
-import path from "path";
-import fs from "fs";
 import {inject, injectable} from "tsyringe";
 import {ProdutoRepository} from "../typeorm/repositories/ProdutoRepository";
 import {IProdutoRepository} from "../repositories/IProdutoRepository";
 import AppError from "../../../shared/errors/AppError";
-import uploadConfig from "../../../config/upload";
 import RedisCache from "../../../shared/cache/RedisCache";
 import {PRODUCT_LIST_KEY} from "../config/productListKey";
+import S3StorageProvider from "../../../shared/s3/S3StorageProvider";
 
 @injectable()
 class UpdateImagemProdutoService {
@@ -21,6 +19,7 @@ class UpdateImagemProdutoService {
 
     public async execute(id: number, imgFilename: string) {
         const produto = await this.produtoRepository.findById(id);
+        const s3StorageProvider = new S3StorageProvider();
 
         if (!produto) {
             throw new AppError("Produto não encontrado.", 422);
@@ -31,21 +30,11 @@ class UpdateImagemProdutoService {
         }
 
         if (produto.imagem) {
-            const imgFilePath = path.join(uploadConfig.directory, produto.imagem);
-
-            let imgFileExists;
-
-            try {
-                imgFileExists = await fs.promises.stat(imgFilePath);
-            } catch (error) {
-                console.log("Erro ao recuperar arquivo:" + error);
-            }
-
-            if (imgFileExists) {
-                await fs.promises.unlink(imgFilePath);
-            }
-
+            await s3StorageProvider.deleteFile(produto.imagem);
         }
+
+        await s3StorageProvider.saveFile(imgFilename);
+
         produto.imagem = imgFilename;
         await this.produtoRepository.update(produto);
     }

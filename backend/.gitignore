@@ -6,7 +6,5 @@ temp/
 .env
 coverage
 dist
-docker-compose.yaml
-data
 
-uploads/
+!temp/.gitkeep

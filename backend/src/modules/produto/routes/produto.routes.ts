@@ -7,7 +7,7 @@ import verificaProduto from "../middlewares/verificaProduto";
 
 const produtoRouter = Router();
 const produtoController = new ProdutoController();
-const upload = multer(uploadConfig);
+const upload = multer(uploadConfig.multer);
 
 produtoRouter.get("/",
     produtoController.index
