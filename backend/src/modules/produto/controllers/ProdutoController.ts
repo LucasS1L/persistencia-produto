@@ -6,7 +6,6 @@ import UpdateProdutoService from "../services/UpdateProdutoService";
 import ShowProdutoService from "../services/ShowProdutoService";
 import produtoResponseDTO from "../dto/produtoResponseDTO";
 import produtoResponseDTOList from "../dto/produtoResponseDTOList";
-import ShowImagemProdutoService from "../services/ShowImagemProdutoService";
 import UpdateImagemProdutoService from "../services/UpdateImagemProdutoService";
 import DeleteProdutoService from "../services/DeleteProdutoService";
 
@@ -50,13 +49,6 @@ export default class ProdutoController {
         const deleteProduto = container.resolve(DeleteProdutoService);
         await deleteProduto.execute(Number(id));
         return response.status(204).send();
-    }
-
-    public async showImagem(request: Request, response: Response): Promise<void> {
-        const {id} = request.params;
-        const showImagem = container.resolve(ShowImagemProdutoService);
-        const imgFilePath = await showImagem.execute(Number(id));
-        return response.sendFile(imgFilePath);
     }
 
     public async updateImagem(request: Request, response: Response): Promise<Response> {

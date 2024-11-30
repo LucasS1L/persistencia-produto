@@ -25,9 +25,7 @@ class UpdateImagemProdutoService {
             throw new AppError("Produto não encontrado.", 422);
         }
 
-        if (!produto.imagem) {
-            await this.redisCache.invalidate(PRODUCT_LIST_KEY);
-        }
+        await this.redisCache.invalidate(PRODUCT_LIST_KEY);
 
         if (produto.imagem) {
             await s3StorageProvider.deleteFile(produto.imagem);

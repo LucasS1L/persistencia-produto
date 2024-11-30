@@ -5,7 +5,7 @@ export default function produtoResponseDTO(produto: Produto) {
         id: produto.id,
         nome: produto.nome,
         descricao: produto.descricao,
-        ...(produto.imagem && {imagem: "/api/v1/produtos/" + produto.id + "/imagem"}),
+        ...(produto.imagem && {imagem: `${process.env.BASE_IMG_URL}/${produto.imagem}`}),
         variacoes: produto.produtoVariacao.map(variacao => ({
             id: variacao.id,
             tamanho: variacao.tamanho,
