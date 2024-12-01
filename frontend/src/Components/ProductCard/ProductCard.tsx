@@ -67,7 +67,7 @@ export default function ProductCard({ product, onProductDeleted, onProductVarian
                         alt={product.nome}
                         style={{ width: "100%", height: 200, objectFit: "cover" }}
                     />
-                ) : <p>Carregando imagem...</p>
+                ) : null
             }
         >
             <Meta title={product.nome} description={product.descricao} />
