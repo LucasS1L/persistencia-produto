@@ -6,13 +6,15 @@ import { Header} from "../../../Style/styles.ts"
 import { updateProduct, getProductDetails } from "../../../api/services/productService.ts";
 import { ProductResponse } from "../../../types/models.ts";
 import { FormContainer } from "../../../Components/FormContainer/FormContainer.ts";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {ROUTES} from "../../../Router/ROUTES.ts";
 
 export default function EditProduct() {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
     const [initialData, setInitialData] = useState<ProductResponse | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const navigate = useNavigate();
 
     const { id } = useParams<{ id: string }>();
 
@@ -68,6 +70,8 @@ export default function EditProduct() {
                 await updateProduct(Number(id), {}, imageFile);
                 message.success("Imagem do produto atualizada com sucesso!");
             }
+            navigate(ROUTES.showProducts);
+
         } catch (error: any) {
             message.error("Erro ao atualizar produto: " + (error.response?.data?.message || error.message));
         } finally {

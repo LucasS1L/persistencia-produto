@@ -7,11 +7,13 @@ import { createProduct } from "../../../api/services/productService.ts";
 import { RcFile } from "antd/lib/upload";
 import {ProductForm} from "../../../types/models.ts";
 import { FormContainer } from "../../../Components/FormContainer/FormContainer.ts";
+import {useNavigate} from "react-router-dom";
+import {ROUTES} from "../../../Router/ROUTES.ts";
 
 export default function CreateProduct() {
     const [loading, setLoading] = useState<boolean>(false);
     const [imageFile, setImageFile] = useState<RcFile | null>(null);
-
+    const navigate = useNavigate();
 
     const handleImageUpload = (file: RcFile) => {
         setImageFile(file);
@@ -33,7 +35,6 @@ export default function CreateProduct() {
         const productData = {
             nome: values.nome,
             descricao: values.descricao,
-            subcategoriaId: values.subcategoriaId,
             tamanho: values.tamanho,
             preco: precoConvertido,
         };
@@ -43,6 +44,8 @@ export default function CreateProduct() {
             await createProduct(productData, imageFile);
             message.success("Produto cadastrado com sucesso!");
             setImageFile(null);
+            navigate(ROUTES.showProducts);
+
         } catch (error: any) {
             message.error("Erro ao cadastrar produto: " + (error.response?.data?.message || error.message));
         } finally {

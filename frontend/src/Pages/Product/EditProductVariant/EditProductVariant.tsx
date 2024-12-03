@@ -2,14 +2,16 @@ import {useEffect, useState} from "react";
 import {Form, Input, Button, message, Spin} from "antd";
 import {ProductVariantToEdit} from "../../../types/models.ts";
 import {getProductVariantDetails, updateProductVariant} from "../../../api/services/productVariantService.ts";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import PageContainer from "../../../Components/PageContainer/PageConteiner.tsx";
 import { Header} from "../../../Style/styles.ts"
+import {ROUTES} from "../../../Router/ROUTES.ts";
 
 export default function EditProductVariant() {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
     const [initialData, setInitialData] = useState<ProductVariantToEdit | null>(null);
+    const navigate = useNavigate();
 
     const {id, variantId} = useParams<{ id: string; variantId: string }>();
     const productId = Number(id);
@@ -51,6 +53,7 @@ export default function EditProductVariant() {
             } else {
                 message.info("Nenhuma alteração detectada.");
             }
+            navigate(ROUTES.showProducts);
         } catch (error: any) {
             message.error("Erro ao atualizar a variação: " + (error.response?.data?.message || error.message));
         } finally {
