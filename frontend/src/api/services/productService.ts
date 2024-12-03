@@ -40,20 +40,9 @@ export async function createProduct(productData: Product, imageFile: File | null
 export async function getProducts(): Promise<ProductResponse[]> {
     try {
         const productsResponse = await api.get<ProductResponse[]>(urlProducts);
-        const products = productsResponse.data;
+        return productsResponse.data;
 
-        return await Promise.all(
-            products.map(async (product) => {
-                try {
-                    const imageResponse = await api.get(urlProductImage(product.id), { responseType: 'blob' });
-                    const imageUrl = URL.createObjectURL(imageResponse.data);
-                    return { ...product, imagem: imageUrl };
-                } catch (error) {
-                    console.error(`Erro ao buscar a imagem para o produto ${product.id}:`, error);
-                    return product;
-                }
-            })
-        );
+
     } catch (error) {
         console.error("Erro ao buscar produtos:", error);
         throw error;
